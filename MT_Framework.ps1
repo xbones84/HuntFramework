@@ -67,8 +67,8 @@ $Return = $Jobs | ForEach-Object {
 }
 
 $Jobs.Clear()
-$Return |  Group ProcessID | Select Count, Name
-$Return | Group Thread | Select Count, Name
+$Return |  Group-Object ProcessID | Select-Object Count, Name
+$Return | Group-Object Thread | Select-Object Count, Name
 ($Return).Count
 $TimeToComplete
 
