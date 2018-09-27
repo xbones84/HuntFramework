@@ -4,9 +4,7 @@ $Parameters = @{
     Param1 = 'Param1'
     Param2 = 'Param2'
 }
-a
- 
-
+`
 #$SessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 
 $RunspacePool = [runspacefactory]::CreateRunspacePool(
