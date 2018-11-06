@@ -1,10 +1,8 @@
-$TimeToComplete = Measure-Command {
-
 $Parameters = @{
     Param1 = 'Param1'
     Param2 = 'Param2'
 }
-`
+
 #$SessionState = [System.Management.Automation.Runspaces.InitialSessionState]::CreateDefault()
 
 $RunspacePool = [runspacefactory]::CreateRunspacePool(
@@ -62,13 +60,12 @@ $Return = $Jobs | ForEach-Object {
     $_.PowerShell.Dispose()
 }
 
-}
 
 $Jobs.Clear()
 $Return |  Group-Object ProcessID | Select-Object Count, Name
 $Return | Group-Object Thread | Select-Object Count, Name
 ($Return).Count
-$TimeToComplete
+
 
  
 
