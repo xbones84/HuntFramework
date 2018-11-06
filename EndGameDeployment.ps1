@@ -25,7 +25,7 @@ $BackgroundColor = $global:BackgroundColor
 
         <Button Name="ImportNoStrike" Content="Import No Strike Targets" HorizontalAlignment="Left" Margin="0,45,0,0" VerticalAlignment="Top" Width="340" FontFamily = "$($FontFamily)" FontWeight = "$($FontWeight)" FontSize = "$($FontSize)" Background="$($LabelBackgroundColor)" Foreground="$($LabelForegroundColor)" Height="30"/>
 
-        <Button Name="BuildTargetDatabase" Content="Build Target Database" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" Width="340" FontFamily = "$($FontFamily)" FontWeight = "$($FontWeight)" FontSize = "$($FontSize)" Background="$($LabelBackgroundColor)" Foreground="$($LabelForegroundColor)" Height="30"/>
+        <Button Name="CheckTargets" Content="Check Targets" HorizontalAlignment="Left" Margin="0,80,0,0" VerticalAlignment="Top" Width="340" FontFamily = "$($FontFamily)" FontWeight = "$($FontWeight)" FontSize = "$($FontSize)" Background="$($LabelBackgroundColor)" Foreground="$($LabelForegroundColor)" Height="30"/>
 
         <Label Name="OperatingSystemLabel" Content="Operating System:" HorizontalAlignment="Left" Margin="0,115,0,0" VerticalAlignment="Top" Width="340" FontFamily = "$($FontFamily)" FontWeight = "$($FontWeight)" FontSize = "$($FontSize)" Background="$($LabelBackgroundColor)" Foreground="$($LabelForegroundColor)" Height="30"/>
         <TextBlock Name="OperatingSystemTextBox" HorizontalAlignment="Left" Margin="140,120,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Height="24" FontFamily = "$($FontFamily)" FontWeight = "$($FontWeight)" FontSize = "$($FontSize)" Background="$($LabelBackgroundColor)" Foreground="$($LabelForegroundColor)" Width="190"/>
@@ -189,6 +189,7 @@ function ImportTargets
         $Target = [Target]::new()
         $Target.IPAddress = $_
         $Target.ValidTarget = $true
+        $global:Targets += $Target
     }
 }
 
@@ -201,11 +202,19 @@ function ImportNoStrike
 
     $NoStrikeTargets = Get-Content $OpenFileDialog.filename
     $NoStrikeTargets | Out-GridView
+
+    $NoStrikeTargets | ForEach-Object {
+        $Target = [Target]::new()
+        $Target.IPAddress = $_
+        $Target.ValidTarget = $False
+        $global:Targets += $Target
+    }
 }
 
-function BuildTargetDatabase 
+function CheckTargets 
 {
-    
+    Write-host "Test"
+    $global:Targets | Out-GridView
 }
 
 Function CancelPrintJob
@@ -787,6 +796,8 @@ foreach ($Printer in $Printers)
 }
 
 $ImportTargets.Add_Click({ImportTargets})
+$ImportNoStrike.Add_Click({ImportNoStrike})
+$CheckTargets.Add_Click({CheckTargets})
 
 
 $ComputerInfoButton.Add_Click({CompInfo})
